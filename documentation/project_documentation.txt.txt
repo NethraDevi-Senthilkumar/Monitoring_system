@@ -1,5 +1,27 @@
-project title
-statement
-objectives
-users
-modules
+1. Project Title
+Classroom Session Monitoring System
+2. Project Overview
+A web-based system to monitor classroom sessions in skill training programmes. It helps manage students, trainers, batches, attendance, sessions, and reports.
+3. Objectives
+Manage student records
+Manage trainer records
+Track attendance
+Monitor training sessions
+Generate reports
+4. Modules
+Login
+Dashboard
+Students
+Trainers
+Batch Management
+Attendance
+Session Monitoring
+Reports
+5. Technologies Used
+HTML
+CSS
+JavaScript
+GitHub
+VS Code
+6. Conclusion
+The system provides an organized way to manage classroom activities and monitor training progress.
