@@ -11,8 +11,15 @@
 </style>
     <body>
         <h1>📚 Classroom Session Monitoring System</h1>
+        <p style="font-family:'Times New Roman', Times, serif;font-weight: bold;font-size:25px;">Welcome Administrator</p>
+        <p id="dateTime" style="font-family:'Times New Roman', Times, serif;font-weight: bold;font-size:20px;"></p>
 
-<nav>
+        <script>
+document.getElementById("dateTime").innerHTML =
+new Date().toLocaleString();
+</script>
+
+        <nav>
     <a href="dashboard.html">Dashboard</a> |
     <a href="students.html">Students</a> |
     <a href="trainer.html">Trainers</a> |
@@ -24,15 +31,119 @@
 
 <hr>
         <h1 style="text-decoration-line: underline;">Dashboard</h1>
-        <div>
-        <div style="background-color: whitesmoke;border: 1px solid black;"><h3>Total students:120</h3></div>
+        
+        <div class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>Total students:120</h3></div>
     
 
-        <div style="background-color: whitesmoke;border: 1px solid black;"><h3>Total trainers:10</h3></div>
+        <div  class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>Total trainers:10</h3></div>
 
-        <div style="background-color: whitesmoke;border: 1px solid black;"><h3>attendance:92%</h3></div>
+        <div class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>Marked attendance:92%</h3></div>
 
-        <div style="background-color: whitesmoke;border: 1px solid black;"><h3>Sessions conducted:50</h3></div>
-        </div>
+        <div class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>Sessions conducted:50</h3></div>
+       <hr>
+
+          
+
+<h3 style="text-decoration-line: underline;">Recent Activities</h3>
+
+
+    <li>Student Ravi marked Present</li><br>
+    <li>Trainer Anitha completed Session 5</li><br>
+    <li>Batch A attendance updated</li><br>
+    <li>Monthly report generated</li>
+<hr>
+
+
+
+<h3 style="text-decoration-line: underline;">Training performance summary</h3>
+<table border="1">
+    <tr>
+        <th>Metric</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Top performing batch</td>
+        <td>Python batch A</td>
+    </tr>
+    <tr>
+        <td>Best trainer</td>
+        <td>Anitha</td>
+    </tr>
+    <tr>
+        <td>Attendance leader</td>
+        <td>Priya</td>
+    </tr>
+    <tr>
+        <td>
+            Most active session
+        </td>
+        <td>Web development</td>
+    </tr>
+</table><hr>
+
+
+
+    <h3 style="text-decoration-line: underline;">Today's Overview</h3>
+
+<table border="1">
+<tr>
+    <th>Item</th>
+    <th>Count</th>
+</tr>
+
+<tr>
+    <td>Students Present</td>
+    <td>110</td>
+</tr>
+
+<tr>
+    <td>Students Absent</td>
+    <td>10</td>
+</tr>
+
+<tr>
+    <td>Sessions Conducted</td>
+    <td>8</td>
+</tr>
+
+<tr>
+    <td>Reports Generated</td>
+    <td>3</td>
+</tr>
+</table><hr>
+<h3 style="text-decoration-line: underline;">System Health</h3>
+
+<table border="1">
+<tr>
+<th>Service</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>Database</td>
+<td>Online</td>
+</tr>
+
+<tr>
+<td>Attendance Module</td>
+<td>Active</td>
+</tr>
+
+<tr>
+<td>Reports Module</td>
+<td>Active</td>
+</tr>
+</table><hr>
+
+
+
+        <footer>
+    <p>© 2026 Classroom Session Monitoring System </p>
+    <p>Developed by Nethra devi S</p>
+</footer>
+<script src="script.js"></script>
+
+
+
     </body>
 </html>

@@ -41,13 +41,40 @@
         <button onclick="alert('Report generated successfully')">Generate report</button>
     <button onclick="alert('Report downloaded successfully')">Download report</button>
     <br><br>
-    <div>
+    <button onclick="generateReport()">Generate report</button>
+    <table border="1">
+<tr>
+    <th>Report ID</th>
+    <th>Batch</th>
+    <th>Attendance %</th>
+    <th>Status</th>
+</tr>
 
-    <h3>Total Students: 120</h3>
-    <h3>Total Trainers: 10</h3>
-    <h3>Attendance Rate: 92%</h3>
-    <h3>Total Sessions Conducted: 50</h3>
-    </div>
+<tr>
+    <td>R001</td>
+    <td>Batch A</td>
+    <td>92%</td>
+    <td>Completed</td>
+</tr>
+
+<tr>
+    <td>R002</td>
+    <td>Batch B</td>
+    <td>88%</td>
+    <td>Completed</td>
+</tr>
+</table><hr>
+<h3 style="text-decoration-line: underline;">Report Summary</h3>
+
+<p>Total Reports Generated: 15</p>
+<p>Average Attendance: 92%</p>
+<p>Best Performing Batch: Python Batch A</p>
+<p>Most Active Trainer: Anitha</p><hr>
+
+    <footer>
+    <p>Classroom Session Monitoring System © 2025</p>
+</footer>
+<script src="script.js"></script>
 
 </body>
 </html>

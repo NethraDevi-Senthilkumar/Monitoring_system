@@ -20,34 +20,63 @@
     <a href="attendance.html">Attendance</a> |
     <a href="sessions.html">Sessions</a> |
     <a href="reports.html">Reports</a>
-</nav>
+</nav><hr>
 
 <h1>Batch Management</h1>
     <button onclick="alert('added successfully')">Add Batch</button>
     <button onclick="alert('edited successfully')">Edit Batch</button>
-    <br><br>
+    <br><br><hr>
+
+    <script src="script.js"></script>
+    <h2 style="text-decoration-line: underline;">Batch Statistics</h2>
+
+<p>Total Batches: 5</p>
+<p>Active Batches: 4</p>
+<p>Completed Batches: 1</p>
 
 
-<table border="1" align="center" style="background-color: whitesmoke;">
-    <tr>
-        <th>Batch ID</th>
-        <th>Batch Name</th>
-        <th>Trainer</th>
-    </tr>
+<table border="1" align="center" style="background-color: whitesmoke;"><hr>
+    <h2 style="text-decoration-line: underline;">Batch Management</h2>
 
-    <tr>
-        <td>B001</td>
-        <td>Batch A</td>
-        <td>Mr. Kumar</td>
-    </tr>
+<input type="text" placeholder="Search Batch"><br><br>
+<button>Search</button><br><br>
 
-    <tr>
-        <td>B002</td>
-        <td>Batch B</td>
-        <td>Ms. Priya</td>
-    </tr>
+<table border="1">
+<tr>
+    <th>Batch ID</th>
+    <th>Batch Name</th>
+    <th>Trainer</th>
+    <th>Students</th>
+    <th>Action</th>
+</tr>
 
-</table>
+<tr>
+    <td>B001</td>
+    <td>Python Batch A</td>
+    <td>Anitha</td>
+    <td>30</td>
+    <td>
+        <button>Edit</button>
+        <button>Delete</button>
+    </td>
+</tr>
+
+<tr>
+    <td>B002</td>
+    <td>Web Development</td>
+    <td>Rahul</td>
+    <td>25</td>
+    <td>
+        <button>Edit</button>
+        <button>Delete</button>
+    </td>
+</tr>
+</table><hr>
+
+<footer>
+    <p>Classroom Session Monitoring System © 2025</p>
+</footer>
+
 
 </body>
 </html>

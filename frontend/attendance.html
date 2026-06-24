@@ -29,32 +29,73 @@
     <button onclick="alert('Student attendance viewed successfully')">View attendance</button>
      <br><br>
 
-    <table border="1" align="center" style="background-color: whitesmoke;">
+     <input type="text" placeholder="Search attendance"><br><br>
+<button>Search</button>
+<br><br><hr>
+
+<script src="script.js"></script>
+
+<h3 style="text-decoration-line: underline;">Attendance Summary</h3>
+
+<p>Total Students : 120</p>
+<p>Present : 110</p>
+<p>Absent : 10</p>
+<p><strong>Attendance percentage:</strong>94%</p><hr>
+
+<h3>Filter Attendance</h3>
+
+<select>
+    <option>All Batches</option>
+    <option>Python Batch A</option>
+    <option>Web Development</option>
+</select><br><br>
+
+<button>Filter</button><hr>
+
+
+
+<br>    
+<table border="1" align="center" style="background-color: whitesmoke;">
         <tr>
             <th>Student Name</th>
             <th>Date</th>
+            <th>Batch</th>
             <th>Status</th>
+            <th>Action</th>
         </tr>
 
         <tr>
             <td>Rahul</td>
             <td>22-06-2026</td>
+            <td>Python batch A</td>
             <td>Present</td>
+            <td><button>Edit</button></td>
         </tr>
 
         <tr>
             <td>Priya</td>
             <td>22-06-2026</td>
+            <td>Web development</td>
             <td>Absent</td>
+                        <td><button>Edit</button></td>
+
         </tr>
 
         <tr>
             <td>Arun</td>
             <td>22-06-2026</td>
+            <td>java</td>
             <td>Present</td>
+                        <td><button>Edit</button></td>
+
         </tr>
 
-    </table>
+    </table><hr>
+    <footer>
+    <p>Classroom Session Monitoring System © 2025</p>
+</footer>
+
+
 
 </body>
 </html>
