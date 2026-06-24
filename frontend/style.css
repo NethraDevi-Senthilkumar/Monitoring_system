@@ -67,3 +67,16 @@ footer{
     border: 1px solid whitesmoke;
     background-color: whitesmoke;
 }
+.card{
+    background-color:white;
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:20px;
+    width:180px;
+    text-align:center;
+    box-shadow:0px 2px 8px rgba(0,0,0,0.1);
+}
+th{
+    background-color:steelblue;
+    color:white;
+}

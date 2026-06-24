@@ -20,3 +20,30 @@ function searchStudent() {
 }
 document.getElementById("dateTime").innerHTML =
 new Date().toLocaleString();
+function searchBatch() {
+    let input = document.getElementById("studentBatch").value;
+    
+    if(input === "") {
+        alert("Please enter a batch number");
+    } else {
+        alert("Searching for: " + input);
+    }
+}
+function searchTrainer() {
+    let input = document.getElementById("studentTrainer").value;
+    
+    if(input === "") {
+        alert("Please enter a trainer name");
+    } else {
+        alert("Searching for: " + input);
+    }
+}
+function searchAttendance() {
+    let input = document.getElementById("studentAttendance").value;
+    
+    if(input === "") {
+        alert("Please enter an attendance count");
+    } else {
+        alert("Searching for: " + input);
+    }
+}
