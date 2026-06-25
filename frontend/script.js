@@ -18,8 +18,17 @@ function searchStudent() {
         alert("Searching for: " + input);
     }
 }
-document.getElementById("dateTime").innerHTML =
-new Date().toLocaleString();
+let dt = document.getElementById("dateTime");
+
+if(dt){
+    dt.innerHTML = new Date().toLocaleString();
+}
+
+let loginDt = document.getElementById("loginDateTime");
+
+if(loginDt){
+    loginDt.innerHTML = new Date().toLocaleString();
+}
 function searchBatch() {
     let input = document.getElementById("studentBatch").value;
     
@@ -47,3 +56,5 @@ function searchAttendance() {
         alert("Searching for: " + input);
     }
 }
+document.getElementById("loginDateTime").innerHTML =
+new Date().toLocaleString();
