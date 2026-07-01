@@ -1,0 +1,50 @@
+[
+    {
+        "id": "R001",
+        "batch": "Python Batch A",
+        "percentage": 92,
+        "status": "Completed"
+    },
+    {
+        "id": "R002",
+        "batch": "Web Development",
+        "percentage": 88,
+        "status": "Completed"
+    },
+    {
+        "id": "R003",
+        "batch": "Python Batch A",
+        "percentage": 94,
+        "status": "Completed"
+    },
+    {
+        "id": "R004",
+        "batch": "Web Development",
+        "percentage": 85,
+        "status": "Completed"
+    },
+    {
+        "id": "R005",
+        "batch": "Python Batch A",
+        "percentage": 94,
+        "status": "Completed"
+    },
+    {
+        "id": "R006",
+        "batch": "Web Development",
+        "percentage": 85,
+        "status": "Completed"
+    },
+    {
+        "id": "R007",
+        "batch": "Python Batch A",
+        "percentage": 94,
+        "status": "Completed"
+    },
+    {
+        "id": "R008",
+        "batch": "Web Development",
+        "percentage": 85,
+        "status": "Completed"
+    }
+]

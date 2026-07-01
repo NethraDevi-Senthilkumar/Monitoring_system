@@ -14,45 +14,44 @@
         <p style="font-family:'Times New Roman', Times, serif;font-weight: bold;font-size:25px;">Welcome Administrator</p>
         <p id="dateTime" style="font-family:'Times New Roman', Times, serif;font-weight: bold;font-size:20px;"></p>
 
-        <script>
-document.getElementById("dateTime").innerHTML =
-new Date().toLocaleString();
-</script>
-
         <nav>
-    <a href="dashboard.html">Dashboard</a> |
-    <a href="students.html">Students</a> |
-    <a href="trainer.html">Trainers</a> |
-    <a href="batch.html">Batches</a> |
-    <a href="attendance.html">Attendance</a> |
-    <a href="sessions.html">Sessions</a> |
-    <a href="reports.html">Reports</a>
-</nav>
+            <a href="/dashboard">Dashboard</a> |
+            <a href="/students">Students</a> |
+            <a href="/trainers">Trainers</a> |
+            <a href="/badges">Batches</a> |
+            <a href="/attendance">Attendance</a> |
+            <a href="/sessions">Sessions</a> |
+            <a href="/reports">Reports</a>
+        </nav>
 
 <hr>
         <h1 style="text-decoration-line: underline;">Dashboard</h1>
         
-        <div class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>👨‍🎓Total students:120</h3></div>
+        <!-- FIX: Added span IDs to update scorecard totals from real file counts -->
+        <div class="card" style="background-color: whitesmoke;border: 1px solid black;">
+            <h3>👨‍🎓 Total students: <span id="dashStudents">0</span></h3>
+        </div>
     
+        <div  class="card" style="background-color: whitesmoke;border: 1px solid black;">
+            <h3>👨‍🏫 Total trainers: <span id="dashTrainers">0</span></h3>
+        </div>
 
-        <div  class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>👨‍🏫Total trainers:10</h3></div>
+        <div class="card" style="background-color: whitesmoke;border: 1px solid black;">
+            <h3>🎓 Marked attendance: <span id="dashAttendance">0%</span></h3>
+        </div>
 
-        <div class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>🎓Marked attendance:92%</h3></div>
-
-        <div class="card" style="background-color: whitesmoke;border: 1px solid black;"><h3>📅Sessions conducted:50</h3></div>
+        <div class="card" style="background-color: whitesmoke;border: 1px solid black;">
+            <h3>📅 Sessions conducted: <span id="dashSessions">0</span></h3>
+        </div>
        <hr>
 
           
-
 <h3 style="text-decoration-line: underline;">Recent Activities</h3>
-
-
-    <li>Student Ravi marked Present</li><br>
-    <li>Trainer Anitha completed Session 5</li><br>
+    <li>Student Rahul marked Present</li><br>
+    <li>Trainer Mr. Kumar completed Session 101</li><br>
     <li>Batch A attendance updated</li><br>
-    <li>Monthly report generated</li>
+    <li>Monthly report summary generated</li>
 <hr>
-
 
 
 <h3 style="text-decoration-line: underline;">Training performance summary</h3>
@@ -67,82 +66,90 @@ new Date().toLocaleString();
     </tr>
     <tr>
         <td>Best trainer</td>
-        <td>Anitha</td>
+        <td>Mr. Kumar</td>
     </tr>
     <tr>
         <td>Attendance leader</td>
-        <td>Priya</td>
+        <td>Rahul</td>
     </tr>
     <tr>
-        <td>
-            Most active session
-        </td>
+        <td>Most active session</td>
         <td>Web development</td>
     </tr>
 </table><hr>
 
 
-
     <h3 style="text-decoration-line: underline;">Today's Overview</h3>
-
 <table border="1">
 <tr>
     <th>Item</th>
     <th>Count</th>
 </tr>
-
 <tr>
     <td>Students Present</td>
-    <td>110</td>
+    <td id="todayPresent">0</td>
 </tr>
-
 <tr>
     <td>Students Absent</td>
-    <td>10</td>
+    <td id="todayAbsent">0</td>
 </tr>
-
 <tr>
     <td>Sessions Conducted</td>
-    <td>8</td>
+    <td id="todaySessions">0</td>
 </tr>
-
 <tr>
     <td>Reports Generated</td>
-    <td>3</td>
+    <td id="todayReports">0</td>
 </tr>
 </table><hr>
-<h3 style="text-decoration-line: underline;">System Health</h3>
 
+<h3 style="text-decoration-line: underline;">System Health</h3>
 <table border="1">
 <tr>
 <th>Service</th>
 <th>Status</th>
 </tr>
-
 <tr>
-<td>Database</td>
-<td>Online</td>
+<td>Local JSON Database</td>
+<td style="color: green; font-weight: bold;">Online (JSON Files)</td>
 </tr>
-
 <tr>
 <td>Attendance Module</td>
-<td>Active</td>
+<td style="color: green; font-weight: bold;">Active</td>
 </tr>
-
 <tr>
 <td>Reports Module</td>
-<td>Active</td>
+<td style="color: green; font-weight: bold;">Active</td>
 </tr>
 </table><hr>
-
-
 
         <footer>
     <p>© 2026 Classroom Session Monitoring System|Developed by Nethra devi S</p>
 </footer>
-<script src="script.js"></script>
 
+<script>
+// 1. Live Timestamp Clock Generator
+document.getElementById("dateTime").innerHTML = new Date().toLocaleString();
 
+// 2. Load System Analytics Live on Page Open
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('/api/dashboard/stats')
+        .then(res => res.json())
+        .then(data => {
+            // Drop counts directly into your top scorecards
+            document.getElementById("dashStudents").innerText = data.students_count;
+            document.getElementById("dashTrainers").innerText = data.trainers_count;
+            document.getElementById("dashSessions").innerText = data.sessions_count;
+            document.getElementById("dashAttendance").innerText = data.attendance_avg + "%";
 
-    </body>
+            // Drop values into Today's Overview breakdown block
+            document.getElementById("todayPresent").innerText = data.present_count;
+            document.getElementById("todayAbsent").innerText = data.absent_count;
+            document.getElementById("todaySessions").innerText = data.sessions_count;
+            document.getElementById("todayReports").innerText = data.reports_count;
+        })
+        .catch(error => console.error("Error loading stats:", error));
+});
+</script>
+</body>
 </html>

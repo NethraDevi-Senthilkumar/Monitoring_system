@@ -1,0 +1,20 @@
+[
+    {
+        "id": "B001",
+        "name": "Python Batch A",
+        "trainer": "Mrs.Anitha",
+        "students": "30"
+    },
+    {
+        "id": "B002",
+        "name": "Web Development",
+        "trainer": "Mr.Rahul",
+        "students": "25"
+    },
+    {
+        "id": "B003",
+        "name": "Java",
+        "trainer": "Mr.Senthil kumar",
+        "students": "64"
+    }
+]

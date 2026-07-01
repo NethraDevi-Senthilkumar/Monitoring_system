@@ -1,0 +1,17 @@
+[
+    {
+        "id": "1",
+        "name": "Mr. Kumar",
+        "subject": "HTML"
+    },
+    {
+        "id": "2",
+        "name": "Mrs. Priya",
+        "subject": "CSS"
+    },
+    {
+        "id": "3",
+        "name": "Mrs.Anitha",
+        "subject": "Javascript"
+    }
+]

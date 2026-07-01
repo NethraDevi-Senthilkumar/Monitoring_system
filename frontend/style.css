@@ -1,82 +1,453 @@
-body{
+/* --- PREMIUM MODERN THEME --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
     text-align: center;
-    font-family:Arial, Helvetica, sans-serif;
-    margin-top: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #eef2f7 0%, #d6e4f0 100%);
+    color: #333333;
+    padding: 40px 20px;
+    min-height: 100vh;
 }
-input{
-    width:250px;
-    padding: 10px;
+
+/* --- HEADER STRUCTURING --- */
+h1 {
+    font-size: 2.2rem;
+    color: #1e3d59;
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
-button{
-    padding:10px 20px;
+
+/* --- CORPORATE NAVIGATION BAR --- */
+nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    border-radius: 50px;
+    max-width: 900px;
+    margin: 0 auto 35px auto;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
-nav{
-    background-color: #f0f0f0;
-    padding:15px;
-}
-nav a{
+
+nav a {
     text-decoration: none;
-    margin:10px;
-    font-weight:bold;
+    color: #516079;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border-radius: 20px;
 }
-table{
-    margin:auto;
-    border-collapse: collapse;
-    background-color: whitesmoke;
+
+nav a:hover {
+    color: #17b890;
+    background-color: rgba(23, 184, 144, 0.1);
 }
-th,td{
-    padding:10px;
-    border:1px solid black;
-}
-div{
-    margin:10px auto;
-    padding:10px;
-    width:300px;
-}
-button {
-    background-color: #87c588;
-    color: white;
-    padding: 10px 15px;
+
+/* --- HORIZONTAL RULES & SEPARATORS --- */
+hr {
     border: none;
-    border-radius: 5px;
-    margin-right: 5px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent);
+    margin: 30px 0;
+}
+
+/* --- REWORKED GLASS CONTAINER BLOCKS --- */
+div, form {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    text-align: left;
+}
+
+div h3, form h3 {
+    color: #1e3d59;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #eef2f7;
+    padding-bottom: 8px;
+}
+
+div p {
+    font-size: 1.05rem;
+    margin: 10px 0;
+    color: #4a5568;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* --- PREMIUM TEXT INPUT FIELDS --- */
+input, select {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0 16px 0;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: #f8fafc;
+    color: #334155;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #17b890;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(23, 184, 144, 0.15);
+}
+
+/* --- PREMIUM INTERACTIVE VIBRANT BUTTONS --- */
+button {
+    background: linear-gradient(135deg, #17b890 0%, #0e9f7a 100%);
+    color: #ffffff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(23, 184, 144, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 button:hover {
-    background-color: #45a049;
+    background: linear-gradient(135deg, #19cb9e 0%, #10b48a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(23, 184, 144, 0.3);
 }
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Delete / Danger Button Variation */
+button[style*="color: red;"], button[style*="red"] {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2) !important;
+}
+
+button[style*="color: red;"]:hover, button[style*="red"]:hover {
+    background: linear-gradient(135deg, #ff8383 0%, #f06262 100%) !important;
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3) !important;
+}
+
+/* --- ANALYTICS METRIC SCORECARDS --- */
 .card {
     display: inline-block;
-    width: 180px;
+    width: 220px;
     margin: 15px;
-    padding: 20px;
+    padding: 25px 20px;
     text-align: center;
-    background-color: white;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 20px;
-    font-weight: bold;
+    background: #ffffff;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(30, 61, 89, 0.06);
+    transition: all 0.3s ease;
+    vertical-align: top;
 }
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(30, 61, 89, 0.12);
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.card p, .card span {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e3d59;
+}
+
+/* --- HIGH-QUALITY GRID DATA TABLES --- */
+table {
+    margin: 30px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 90%;
+    max-width: 1000px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+    border: none;
+}
+
+th, td {
+    padding: 16px 20px;
+    border: none;
+    text-align: left;
+}
+
+tr {
+    border-bottom: 1px solid #eef2f7;
+    transition: background-color 0.2s ease;
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+th {
+    background-color: #1e3d59;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Table action button spacing customization */
+td button {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    margin: 2px;
+}
+
+/* --- RECENT ACTIVITIES LIST --- */
+li {
+    list-style: none;
+    background: #ffffff;
+    max-width: 500px;
+    margin: 10px auto;
+    padding: 14px 20px;
+    border-radius: 8px;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    border-left: 4px solid #17b890;
+    font-size: 0.95rem;
+    color: #4a5568;
+}
+
+/* --- SYSTEM FOOTER --- */
 footer {
     text-align: center;
-    padding: 10px;
-    margin-top: 30px;
+    padding: 20px;
+    margin-top: 50px;
+    background: transparent;
+    border: none;
+    font-size: 0.85rem;
+    color: #718096;
 }
-footer{
-    border: 1px solid whitesmoke;
-    background-color: whitesmoke;
+
+/* --- EXTRA UNIQUE DESIGN POLISH --- */
+
+/* Translucent Glassmorphism Effect for Cards and Divs */
+.card, div, form {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05) !important;
 }
-.card{
-    background-color:white;
-    border:1px solid #ccc;
-    border-radius:10px;
-    padding:20px;
-    width:180px;
-    text-align:center;
-    box-shadow:0px 2px 8px rgba(0,0,0,0.1);
+
+/* Glowing Left Anchor Stripe for Roster Tables and Headers */
+h1 {
+    display: inline-block;
+    border-left: 5px solid #17b890;
+    padding-left: 15px;
+    border-radius: 4px;
+    text-align: left;
 }
-th{
-    background-color:steelblue;
-    color:white;
+
+/* Make Navigation Links Expand Nicely on Cursor Hover */
+nav a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 184, 144, 0.15);
+}
+
+/* Dynamic Interactive Pop for Table Row Selections */
+tbody tr {
+    transition: all 0.2s ease;
+}
+tbody tr:hover {
+    background-color: rgba(241, 245, 249, 0.8) !important;
+    transform: scale(1.005);
+    box-shadow: inset 4px 0 0 #1e3d59;
+}
+
+/* Clean Professional Shadows for Input Focus Zones */
+input:focus, select:focus {
+    transform: translateY(-1px);
+}
+/* --- EXTRA UNIQUE DESIGN POLISH --- */
+
+/* Translucent Glassmorphism Effect for Cards and Divs */
+.card, div, form {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05) !important;
+}
+
+/* Glowing Left Anchor Stripe for Roster Tables and Headers */
+h1 {
+    display: inline-block;
+    border-left: 5px solid #17b890;
+    padding-left: 15px;
+    border-radius: 4px;
+    text-align: left;
+}
+
+/* Make Navigation Links Expand Nicely on Cursor Hover */
+nav a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 184, 144, 0.15);
+}
+
+/* Dynamic Interactive Pop for Table Row Selections */
+tbody tr {
+    transition: all 0.2s ease;
+}
+tbody tr:hover {
+    background-color: rgba(241, 245, 249, 0.8) !important;
+    transform: scale(1.005);
+    box-shadow: inset 4px 0 0 #1e3d59;
+}
+
+/* Clean Professional Shadows for Input Focus Zones */
+input:focus, select:focus {
+    transform: translateY(-1px);
+}
+/* --- DAY 7 TARGETED LAYOUT REFINE CORRECTIONS --- */
+
+/* ISSUE 1 FIX: Stop Title Wrapping and Overlapping in Attendance Management */
+h1 {
+    display: block !important; /* Forces the header title to take its own clean row */
+    text-align: center !important; /* Centers the title cleanly on your screen */
+    margin-top: 20px !important;
+    margin-bottom: 25px !important;
+    border-left: none !important; /* Removes the heavy side bar that shifted layout text */
+}
+
+/* Ensure form layout containers clear the floating header fields completely */
+form, #studentForm, #trainerForm, #batchForm, #sessionForm, div[style*="background-color: whitesmoke"] {
+    clear: both !important;
+    margin: 25px auto !important; /* Safely balances container card items down center line */
+}
+
+/* ISSUE 2 FIX: Keep Main Dashboard Title Centered and Separate from Cards */
+body > h1 {
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Prevent statistical overview elements from bundle stacking into left corners */
+.card {
+    display: inline-block !important; /* Forces layout boxes to stand side-by-side */
+    margin: 15px !important;
+    vertical-align: top !important;
+}
+
+/* ISSUE 3 FIX: Shrink Search and Filter Inputs from Stretching Full Screen Length */
+#studentSearch, #trainerSearch, #batchSearch, #sessionSearch, #attendanceSearch, #batchFilter {
+    max-width: 320px !important; /* Locks width size down to a neat, compact professional length */
+    display: inline-block !important;
+    margin: 10px 5px !important; /* Spaces elements nicely next to their companion buttons */
+    vertical-align: middle !important;
+}
+
+/* Force standard action buttons next to search lines to align symmetrically */
+#studentSearch + button, 
+#trainerSearch + button, 
+#batchSearch + button, 
+#sessionSearch + button, 
+#attendanceSearch + button,
+#batchFilter + br + button {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-bottom: 6px !important;
+}
+
+/* --- DASHBOARD CLUMSINESS & SPACING REFINE CORRECTIONS --- */
+
+/* 1. Add breathing room to the top Welcome texts to stop clumsiness */
+p[style*="font-size:25px;"], p[style*="font-size:20px;"], #dateTime {
+    display: block !important;
+    text-align: center !important; /* Centers the welcome text and clock cleanly */
+    margin: 10px auto !important;   /* Adds healthy spacing above and below the text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    color: #4a5568 !important;
+}
+
+#dateTime {
+    margin-bottom: 30px !important; /* Pushes the navigation bar down so it doesn't crowd */
+    color: #718096 !important;
+    font-size: 1.1rem !important;
+}
+
+/* 2. Separate the metric scorecards so they don't touch each other */
+.card {
+    display: inline-block !important;
+    width: 230px !important;          /* Sets a neat uniform width */
+    margin: 15px 20px !important;     /* ➡️ INCREASES SIDE-BY-SIDE SPACING MANNER */
+    padding: 25px 20px !important;
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px rgba(30, 61, 89, 0.08) !important;
+    vertical-align: top !important;
+    border: none !important;
+}
+
+/* Ensure the scorecard dashboard row centers itself evenly on the full page length */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Force elements like tables and lists to maintain full neat sizing under the cards */
+table, nav, hr, h1 {
+    width: 100% !important;
+    max-width: 900px !important; /* Keeps your tables and menus tightly aligned down the center */
+}
+/* --- PREMIUM FLOATING LOGIN CARD COSMETICS --- */
+.login-card {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 15px 35px rgba(30, 61, 89, 0.12) !important;
+    border-radius: 20px !important;
+    padding: 40px 30px !important;
+    width: 100% !important;
+    max-width: 420px !important; /* Locks login box to a neat, tight corporate size block */
+    margin: 40px auto !important; /* Centers card precisely in dead center of the screen height */
+}
+
+/* Ensure individual form lines stack perfectly down your security panel card */
+.login-card form {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important;
 }

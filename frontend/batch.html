@@ -13,70 +13,194 @@
     <h1>📚 Classroom Session Monitoring System</h1>
 
 <nav>
-    <a href="dashboard.html">Dashboard</a> |
-    <a href="students.html">Students</a> |
-    <a href="trainer.html">Trainers</a> |
-    <a href="batch.html">Batches</a> |
-    <a href="attendance.html">Attendance</a> |
-    <a href="sessions.html">Sessions</a> |
-    <a href="reports.html">Reports</a>
+    <a href="/dashboard">Dashboard</a> |
+    <a href="/students">Students</a> |
+    <a href="/trainers">Trainers</a> |
+    <a href="/badges">Batches</a> | <!-- Keeps your main link working -->
+    <a href="/attendance">Attendance</a> |
+    <a href="/sessions">Sessions</a> |
+    <a href="/reports">Reports</a>
 </nav><hr>
 
 <h1>Batch Management</h1>
-    <button onclick="alert('edited successfully')">Edit Batch</button>
-    <br><br>
-    <input type="text" id="studentBatch" placeholder="Search Batch"><br><br>
+
+<!-- FIX: Grouped inputs into a dedicated form wrapper -->
+<form id="batchForm">
+<input type="text" id="bId" placeholder="Batch ID"><br><br>
+
+<input type="text" id="bName" placeholder="Batch Name"><br><br>
+
+<input type="text" id="btrainer" placeholder="Trainer Name"><br><br>
+
+<input type="text" id="bstudents" placeholder="Students Count"><br><br>
+
+<button type="submit">Add Batch</button>
+<br><br>
+</form><hr>
+
+<br>
+
+<input type="text" id="batchSearch" placeholder="Search Batch"><br><br>
 <button onclick="searchBatch()">Search</button>
+
 <hr>
+<h2 style="text-decoration-line: underline;">Batch Statistics</h2>
 
-    <script src="script.js"></script>
-    <h2 style="text-decoration-line: underline;">Batch Statistics</h2>
-
-<p>Total Batches: 5</p>
-<p>Active Batches: 4</p>
-<p>Completed Batches: 1</p>
+<!-- FIX: Added span IDs to update your metrics card in real time -->
+<p>Total Batches: <span id="statTotal">0</span></p>
+<p>Active Batches: <span id="statActive">0</span></p>
+<p>Completed Batches: <span id="statCompleted">0</span></p>
 
 
-<table border="1" align="center" style="background-color: whitesmoke;"><hr>
+<table id="studentBatch" border="1" align="center" style="background-color: whitesmoke;">
     <h2 style="text-decoration-line: underline;">Batch Management</h2>
-
-
-<table border="1">
-<tr>
-    <th>Batch ID</th>
-    <th>Batch Name</th>
-    <th>Trainer</th>
-    <th>Students</th>
-    <th>Action</th>
-</tr>
-
-<tr>
-    <td>B001</td>
-    <td>Python Batch A</td>
-    <td>Anitha</td>
-    <td>30</td>
-    <td>
-        <button>Edit</button>
-        <button>Delete</button>
-    </td>
-</tr>
-
-<tr>
-    <td>B002</td>
-    <td>Web Development</td>
-    <td>Rahul</td>
-    <td>25</td>
-    <td>
-        <button>Edit</button>
-        <button>Delete</button>
-    </td>
-</tr>
+    <thead>
+        <tr>
+            <th>Batch ID</th>
+            <th>Batch Name</th>
+            <th>Trainer</th>
+            <th>Students</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="batchTableBody">
+        <!-- Python data drops in here automatically -->
+    </tbody>
 </table><hr>
 
 <footer>
     <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
 
+<script>
+// 1. Load your stored batch files automatically on layout opening
+document.addEventListener("DOMContentLoaded", () => {
+    loadBatches();
 
+    const form = document.getElementById("batchForm");
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const idInput = document.getElementById("bId");
+            const nameInput = document.getElementById("bName");
+            const trainerInput = document.getElementById("btrainer");
+            const studentsInput = document.getElementById("bstudents");
+
+            if (!idInput.value.trim() || !nameInput.value.trim() || !trainerInput.value.trim() || !studentsInput.value.trim()) {
+                alert("Please fill in all batch input boxes!");
+                return;
+            }
+
+            const batchData = {
+                id: idInput.value.trim(),
+                name: nameInput.value.trim(),
+                trainer: trainerInput.value.trim(),
+                students: studentsInput.value.trim()
+            };
+
+            fetch('/api/batches', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(batchData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    form.reset();
+                    document.getElementById("bId").readOnly = false;
+                    document.getElementById("bId").style.backgroundColor = "";
+                    loadBatches();
+                }
+            })
+            .catch(error => console.error("Error saving batch:", error));
+        });
+    }
+});
+
+// 2. Fetch roster data package from Python file database
+function loadBatches() {
+    fetch('/api/batches')
+        .then(response => response.json())
+        .then(data => {
+            renderBatchRows(data.batches);
+        })
+        .catch(error => console.error("Error loading batches:", error));
+}
+
+// Generate rows and recalculate 
+function renderBatchRows(batchList) {
+    const tbody = document.getElementById("batchTableBody");
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    // Dynamic stats generator logic
+    document.getElementById("statTotal").innerText = batchList.length;
+    // Basic rules to simulate realistic stats using your dataset
+    document.getElementById("statActive").innerText = batchList.length > 0 ? batchList.length - 1 : 0;
+    document.getElementById("statCompleted").innerText = batchList.length > 0 ? 1 : 0;
+
+    batchList.forEach((batch) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${batch.id}</td>
+            <td><strong>${batch.name}</strong></td>
+            <td>${batch.trainer}</td>
+            <td>${batch.students}</td>
+            <td>
+                <button onclick="editBatch('${batch.id}', '${batch.name}', '${batch.trainer}', '${batch.students}')">Edit Batch</button>
+                <button onclick="deleteBatch('${batch.id}')" style="color: red;">Delete Batch</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// 3. SEARCH BATCH FILTER
+function searchBatch() {
+    const searchVal = document.getElementById("batchSearch").value.toLowerCase().trim();
+    
+    fetch('/api/batches')
+        .then(response => response.json())
+        .then(data => {
+            const filtered = data.batches.filter(batch => 
+                batch.name.toLowerCase().includes(searchVal) || 
+                batch.id.toLowerCase().includes(searchVal) ||
+                batch.trainer.toLowerCase().includes(searchVal)
+            );
+            renderBatchRows(filtered);
+        });
+}
+
+// 4. DELETE BATCH ROUTINE
+function deleteBatch(batchId) {
+    if (!confirm("Are you sure you want to delete batch ID: " + batchId + "?")) return;
+
+    fetch('/api/batches/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: batchId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            loadBatches();
+        }
+    });
+}
+
+// 5. EDIT BATCH ENTRY BOUNCE
+function editBatch(id, name, trainer, students) {
+    document.getElementById("bId").value = id;
+    document.getElementById("bName").value = name;
+    document.getElementById("btrainer").value = trainer;
+    document.getElementById("bstudents").value = students;
+    
+    document.getElementById("bId").readOnly = true;
+    document.getElementById("bId").style.backgroundColor = "#e0e0e0";
+    document.getElementById("bName").focus();
+}
+</script>
 </body>
 </html>

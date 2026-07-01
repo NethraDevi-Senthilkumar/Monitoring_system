@@ -13,72 +13,178 @@
     <h1>📚 Classroom Session Monitoring System</h1>
 
 <nav>
-<a href="dashboard.html">Dashboard</a> |
-<a href="students.html">Students</a> |
-<a href="trainer.html">Trainers</a> |
-<a href="batch.html">Batches</a> |
-<a href="attendance.html">Attendance</a> |
-<a href="sessions.html">Sessions</a> |
-<a href="reports.html">Reports</a>
+    <a href="/dashboard">Dashboard</a> |
+    <a href="/students">Students</a> |
+    <a href="/trainers">Trainers</a> |
+    <a href="/badges">Batches</a> |
+    <a href="/attendance">Attendance</a> |
+    <a href="/sessions">Sessions</a> |
+    <a href="/reports">Reports</a>
 </nav>
 <hr>
 
 <h1>Session Management</h1>
-    <button onclick="alert('added successfully')">Add session</button>
-    <button onclick="alert('updated successfully')">Update session</button><br><br>
+<form id="sessionForm">
+<input type="text" id="sessionId" placeholder="Session ID"><br><br>
 
-<table border="1" align="center" style="background-color: whitesmoke;">
-    <tr>
-        <th>Session ID</th>
-        <th>Topic</th>
-        <th>Trainer</th>
-    </tr>
+<input type="text" id="sessionTopic" placeholder="Topic"><br><br>
 
-    <tr>
-        <td>101</td>
-        <td>HTML Basics</td>
-        <td>Mr. Kumar</td>
-    </tr>
+<input type="text" id="sessionTrainer" placeholder="Trainer"><br><br>
 
-    <tr>
-        <td>102</td>
-        <td>CSS Basics</td>
-        <td>Ms. Priya</td>
-    </tr>
-    <tr>
-        <td>103</td>
-        <td>Javascript</td>
-        <td>Mr.Ravi</td>
-    </tr>
+<button type="submit">Add session</button><br><br>
+</form>
+
+<input type="text" id="sessionSearch" placeholder="Search Session"><br><br>
+<button onclick="searchSession()">Search</button>
+<br><br>
+
+<table id="sessionTable" border="1" align="center" style="background-color: whitesmoke;">
+    <thead>
+        <tr>
+            <th>Session ID</th>
+            <th>Topic</th>
+            <th>Trainer</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="sessionTableBody">
+        <!-- Python data drops here -->
+    </tbody>
 </table><hr>
 
 <h3>Session Statistics</h3>
-
-<table border="1">
+<table border="1" style="background-color: whitesmoke;">
 <tr>
-<th>Metric</th>
-<th>Value</th>
+    <th>Metric</th>
+    <th>Value</th>
 </tr>
-
 <tr>
-<td>Total Sessions</td>
-<td>50</td>
+    <td>Total Sessions</td>
+    <td id="statTotalSessions">0</td>
 </tr>
-
 <tr>
-<td>Completed</td>
-<td>45</td>
+    <td>Completed</td>
+    <td id="statCompletedSessions">0</td>
 </tr>
-
 <tr>
-<td>Upcoming</td>
-<td>5</td>
+    <td>Upcoming</td>
+    <td id="statUpcomingSessions">0</td>
 </tr>
 </table><hr>
 
 <footer>
     <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
-<script src="script.js"></script>
+
+<script>
+// Load stored active sessions from file database automatically 
+document.addEventListener("DOMContentLoaded", () => {
+    loadSessions();
+
+    const form = document.getElementById("sessionForm");
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const idInput = document.getElementById("sessionId");
+            const topicInput = document.getElementById("sessionTopic");
+            const trainerInput = document.getElementById("sessionTrainer");
+
+            if (!idInput.value.trim() || !topicInput.value.trim() || !trainerInput.value.trim()) {
+                alert("Please fill out all session fields!");
+                return;
+            }
+
+            const sessionData = {
+                id: idInput.value.trim(),
+                topic: topicInput.value.trim(),
+                trainer: trainerInput.value.trim()
+            };
+
+            fetch('/api/sessions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sessionData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    form.reset();
+                    document.getElementById("sessionId").readOnly = false;
+                    document.getElementById("sessionId").style.backgroundColor = "";
+                    loadSessions();
+                }
+            });
+        });
+    }
+});
+
+function loadSessions() {
+    fetch('/api/sessions')
+        .then(res => res.json())
+        .then(data => {
+            renderSessionRows(data.sessions);
+        });
+}
+
+function renderSessionRows(sessionList) {
+    const tbody = document.getElementById("sessionTableBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    // Dynamically calculate metrics panel rows
+    document.getElementById("statTotalSessions").innerText = sessionList.length;
+    document.getElementById("statCompletedSessions").innerText = sessionList.length > 0 ? sessionList.length - 1 : 0;
+    document.getElementById("statUpcomingSessions").innerText = sessionList.length > 0 ? 1 : 0;
+
+    sessionList.forEach((session) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${session.id}</td>
+            <td><strong>${session.topic}</strong></td>
+            <td>${session.trainer}</td>
+            <td>
+                <button onclick="editSession('${session.id}', '${session.topic}', '${session.trainer}')">Edit</button>
+                <button onclick="deleteSession('${session.id}')" style="color: red;">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function searchSession() {
+    const searchVal = document.getElementById("sessionSearch").value.toLowerCase().trim();
+    fetch('/api/sessions')
+        .then(res => res.json())
+        .then(data => {
+            const filtered = data.sessions.filter(s => 
+                s.topic.toLowerCase().includes(searchVal) || 
+                s.id.toString().includes(searchVal) || 
+                s.trainer.toLowerCase().includes(searchVal)
+            );
+            renderSessionRows(filtered);
+        });
+}
+
+function deleteSession(sessionId) {
+    if (!confirm("Delete session ID: " + sessionId + "?")) return;
+    fetch('/api/sessions/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: sessionId })
+    })
+    .then(res => res.json())
+    .then(data => { if (data.status === "success") loadSessions(); });
+}
+
+function editSession(id, topic, trainer) {
+    document.getElementById("sessionId").value = id;
+    document.getElementById("sessionTopic").value = topic;
+    document.getElementById("sessionTrainer").value = trainer;
+    document.getElementById("sessionId").readOnly = true;
+    document.getElementById("sessionId").style.backgroundColor = "#e0e0e0";
+    document.getElementById("sessionTopic").focus();
+}
+</script>
 </body>
 </html>

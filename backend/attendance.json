@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Rahul",
+        "date": "2026-06-22",
+        "batch": "Python batch A",
+        "status": "Present"
+    },
+    {
+        "name": "Priya",
+        "date": "2026-06-22",
+        "batch": "Web development",
+        "status": "Absent"
+    },
+    {
+        "name": "Arun",
+        "date": "2026-06-22",
+        "batch": "java",
+        "status": "Absent"
+    },
+    {
+        "name": "Abinaya",
+        "date": "2026-07-01",
+        "batch": "Web development",
+        "status": "Present"
+    }
+]

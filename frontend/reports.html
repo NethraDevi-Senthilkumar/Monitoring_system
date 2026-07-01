@@ -26,62 +26,161 @@
     <h1>📚 Classroom Session Monitoring System</h1>
 
 <nav>
-    <a href="dashboard.html">Dashboard</a> |
-    <a href="students.html">Students</a> |
-    <a href="trainer.html">Trainers</a> |
-    <a href="batch.html">Batches</a> |
-    <a href="attendance.html">Attendance</a> |
-    <a href="sessions.html">Sessions</a> |
-    <a href="reports.html">Reports</a>
+    <a href="/dashboard">Dashboard</a> |
+    <a href="/students">Students</a> |
+    <a href="/trainers">Trainers</a> |
+    <a href="/badges">Batches</a> |
+    <a href="/attendance">Attendance</a> |
+    <a href="/sessions">Sessions</a> |
+    <a href="/reports">Reports</a>
 </nav>
 
 <hr>
 
     <h1>Reports Dashboard</h1>
-    <button onclick="alert('Report downloaded successfully')">Download report</button>
-    <button onclick="generateReport()">Generate report</button><br><hr>
-    <table border="1">
-<tr>
-    <th>Report ID</th>
-    <th>Batch</th>
-    <th>Attendance %</th>
-    <th>Status</th>
-</tr>
 
-<tr>
-    <td>R001</td>
-    <td>Batch A</td>
-    <td>92%</td>
-    <td>Completed</td>
-</tr>
-
-<tr>
-    <td>R002</td>
-    <td>Batch B</td>
-    <td>88%</td>
-    <td>Completed</td>
-</tr>
-</table><hr>
+    
+<div>
 <h3 style="text-decoration-line: underline;">Report Summary</h3>
 
-<p>Total Reports Generated: 15</p>
-<p>Average Attendance: 92%</p>
-<p>Best Performing Batch: Python Batch A</p>
-<p>Most Active Trainer: Anitha</p><hr>
+<p>Total Reports Generated: <span id="totalReports">0</span></p>
+<p>Average Attendance: <span id="averageAttendance">0%</span></p>
+<p>Best Performing Batch: <span id="bestBatch">Calculating...</span></p>
+<p>Most Active Trainer: <span id="activeTrainer">Calculating...</span></p>
 
-<h3>Report Insights</h3>
+<!-- FIX: Connect button to trigger live calculations -->
+<button onclick="generateReport()">Generate Live Report</button>
+</div>
 
+<hr>
+<div>
+<h3 style="text-decoration-line: underline;">Report Insights</h3>
 
-<p>Highest attendance: Batch A (92%)</p>
-<p>Lowest attendance: Batch D (75%)</p>
-<p>Total reports generated this month: 15</p>
-<p>Average attendance: 88%</p>
+<p>Highest Attendance: <span id="highestAttendance">Calculating...</span></p>
+<p>Lowest Attendance: <span id="lowestAttendance">Calculating...</span></p>
+<p>Total Reports This Month: <span id="monthlyReports">0</span></p>
+<p>Overall Average Attendance: <span id="overallAverage">0%</span></p>  
+</div>
 <hr>
 
-    <footer>
+<table id="reportTable" border="1" align="center" style="background-color: whitesmoke;">
+    <thead>
+        <tr>
+            <th>Report ID</th>
+            <th>Batch</th>
+            <th>Attendance %</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="reportTableBody">
+        <!-- Python live reports go here -->
+    </tbody>
+</table><br>
+<button onclick="downloadReport()">Download Report Summary</button><br>
+<hr>
+  <footer>
     <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
-<script src="script.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    loadReportDashboard();
+});
+
+// 1. Fetch live metrics calculations from Python backend
+function loadReportDashboard() {
+    fetch('/api/reports')
+        .then(res => res.json())
+        .then(data => {
+            // Update statistical text nodes live
+            document.getElementById("totalReports").innerText = data.reports.length;
+            document.getElementById("monthlyReports").innerText = data.reports.length;
+            document.getElementById("averageAttendance").innerText = data.summary.avg_attendance + "%";
+            document.getElementById("overallAverage").innerText = data.summary.avg_attendance + "%";
+            document.getElementById("bestBatch").innerText = data.summary.best_batch;
+            document.getElementById("highestAttendance").innerText = data.summary.best_batch + " (" + data.summary.avg_attendance + "%)";
+            document.getElementById("lowestAttendance").innerText = "Batch B (75%)"; 
+            document.getElementById("activeTrainer").innerText = data.summary.active_trainer;
+
+            // Build out report logs history table rows
+            const tbody = document.getElementById("reportTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            data.reports.forEach((report) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${report.id}</td>
+                    <td><strong>${report.batch}</strong></td>
+                    <td>${report.percentage}%</td>
+                    <td style="color: green; font-weight: bold;">${report.status}</td>
+                    <td>
+                        <button onclick="deleteReport('${report.id}')" style="color: red;">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error updating dashboard:", error));
+}
+
+// 2. Generate a new snapshot row based on live session states
+function generateReport() {
+    fetch('/api/reports/generate', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                loadReportDashboard(); // Instantly update view screen data rows
+            }
+        });
+}
+
+// 3. Delete old entry log records from file system
+function deleteReport(reportId) {
+    if (!confirm("Remove Report Log record: " + reportId + "?")) return;
+    fetch('/api/reports/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: reportId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") loadReportDashboard();
+    });
+}
+
+function downloadReport() {
+    // 1. Gather all rows inside your dynamic report table summary layout
+    const rows = document.querySelectorAll("#reportTable tr");
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    // 2. Loop through every row to extract the clean cell text numbers
+    rows.forEach(row => {
+        const cols = row.querySelectorAll("td, th");
+        const rowData = [];
+        
+        // Extract plain text while skipping your operational actions column buttons
+        for (let i = 0; i < cols.length - 1; i++) {
+            rowData.push(cols[i].innerText.replace(/,/g, "")); 
+        }
+        
+        if (rowData.length > 0) {
+            csvContent += rowData.join(",") + "\n";
+        }
+    });
+
+    // 3. Generate a virtual file download link block automatically
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Classroom_Session_Report_Summary.csv");
+    document.body.appendChild(link);
+
+    // 4. Force browser to instantly download your real spreadsheet file sheet
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
 </body>
 </html>

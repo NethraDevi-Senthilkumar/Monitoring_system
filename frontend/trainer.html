@@ -13,62 +13,185 @@
     <h1>📚 Classroom Session Monitoring System</h1>
 
 <nav>
-<a href="dashboard.html">Dashboard</a> |
-<a href="students.html">Students</a> |
-<a href="trainer.html">Trainers</a> |
-<a href="batch.html">Batches</a> |
-<a href="attendance.html">Attendance</a> |
-<a href="sessions.html">Sessions</a> |
-<a href="reports.html">Reports</a>
+    <a href="/dashboard">Dashboard</a> |
+    <a href="/students">Students</a> |
+    <a href="/trainers">Trainers</a> |
+    <a href="/badges">Badges</a> |
+    <a href="/attendance">Attendance</a> |
+    <a href="/sessions">Sessions</a> |
+    <a href="/reports">Reports</a>
 </nav>
 <hr>
 
 <h1>Trainer Management</h1>
 
-<button onclick="alert('trainer added successfully!')">Add Trainer</button>
-    <button onclick="alert('trainer edited successfully')">Edit trainer</button>
-        <button onclick="alert('trainer assigned successfully')">Assign batch</button>
+<!-- FIX: Added form container with clear form ID -->
+<form id="trainerForm">
+<input type="text" id="tId" placeholder="Trainer ID"><br><br>
 
+<input type="text" id="tName" placeholder="Trainer Name"><br><br>
 
+<input type="text" id="tSubject" placeholder="Subject"><br><br>
 
+<!-- FIX: Set type to submit for secure data collection -->
+<button type="submit">Add Trainer</button>
 <br><br>
+</form>
+<hr>
 
-<input type="text" id="studentTrainer" placeholder="Search Trainer"><br><br>
+<br>
+<input type="text" id="trainerSearch" placeholder="Search Trainer"><br><br>
 <button onclick="searchTrainer()">Search</button>
 <br><br><hr>
 <h2>Trainer Management</h2>
     <div class="card">
         <h3>Total trainers</h3>
-        <p>10</p>
+        <p id="totalTrainerCount">0</p>
     </div><hr>
 
 
-<table border="1" align="center" style="background-color: whitesmoke;">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Subject</th>
-    </tr>
-
-    <tr>
-        <td>1</td>
-        <td>Mr. Kumar</td>
-        <td>HTML</td>
-    </tr>
-
-    <tr>
-        <td>2</td>
-        <td>Ms. Priya</td>
-        <td>CSS</td>
-    </tr>
-
+<table id="trainerTable" border="1" align="center" style="background-color: whitesmoke;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Subject</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="trainerTableBody">
+        <!-- Python data drops in here automatically -->
+    </tbody>
 </table><hr>
 
 <footer>
     <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
 
-<script src="script.js"></script>
+<script>
+// 1. Load saved trainers on page opening automatically
+document.addEventListener("DOMContentLoaded", () => {
+    loadTrainers();
 
+    const form = document.getElementById("trainerForm");
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault(); 
+
+            const idInput = document.getElementById("tId");
+            const nameInput = document.getElementById("tName");
+            const subjectInput = document.getElementById("tSubject");
+
+            if (!idInput.value.trim() || !nameInput.value.trim() || !subjectInput.value.trim()) {
+                alert("Please fill in all trainer input fields!");
+                return;
+            }
+
+            const trainerData = {
+                id: idInput.value.trim(),
+                name: nameInput.value.trim(),
+                subject: subjectInput.value.trim()
+            };
+
+            fetch('/api/trainers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(trainerData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    form.reset(); 
+                    document.getElementById("tId").readOnly = false;
+                    document.getElementById("tId").style.backgroundColor = "";
+                    loadTrainers();  
+                }
+            })
+            .catch(error => console.error("Error saving trainer:", error));
+        });
+    }
+});
+
+// 2. Fetch full trainer list from local storage file
+function loadTrainers() {
+    fetch('/api/trainers')
+        .then(response => response.json())
+        .then(data => {
+            renderTrainerRows(data.trainers);
+        })
+        .catch(error => console.error("Error loading trainers:", error));
+}
+
+// Build list rows dynamically
+function renderTrainerRows(trainerList) {
+    const tbody = document.getElementById("trainerTableBody");
+    const countText = document.getElementById("totalTrainerCount");
+    if (!tbody) return;
+
+    tbody.innerHTML = ""; 
+
+    if (countText) {
+        countText.innerText = trainerList.length;
+    }
+
+    trainerList.forEach((trainer) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${trainer.id}</td>
+            <td><strong>${trainer.name}</strong></td>
+            <td>${trainer.subject}</td>
+            <td>
+                <button onclick="editTrainer('${trainer.id}', '${trainer.name}', '${trainer.subject}')">Edit</button>
+                <button onclick="deleteTrainer('${trainer.id}')" style="color: red;">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// 3. SEARCH TRAINER FUNCTION
+function searchTrainer() {
+    const searchVal = document.getElementById("trainerSearch").value.toLowerCase().trim();
+    
+    fetch('/api/trainers')
+        .then(response => response.json())
+        .then(data => {
+            const filtered = data.trainers.filter(trainer => 
+                trainer.name.toLowerCase().includes(searchVal) || 
+                trainer.id.toString().includes(searchVal) ||
+                trainer.subject.toLowerCase().includes(searchVal)
+            );
+            renderTrainerRows(filtered); 
+        });
+}
+
+// 4. DELETE TRAINER FUNCTION
+function deleteTrainer(trainerId) {
+    if (!confirm("Are you sure you want to delete trainer ID: " + trainerId + "?")) return;
+
+    fetch('/api/trainers/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: trainerId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            loadTrainers(); 
+        }
+    });
+}
+
+// 5. EDIT TRAINER FUNCTION
+function editTrainer(id, name, subject) {
+    document.getElementById("tId").value = id;
+    document.getElementById("tName").value = name;
+    document.getElementById("tSubject").value = subject;
+    
+    document.getElementById("tId").readOnly = true; 
+    document.getElementById("tId").style.backgroundColor = "#e0e0e0"; 
+    document.getElementById("tName").focus();
+}
+</script>
 </body>
 </html>

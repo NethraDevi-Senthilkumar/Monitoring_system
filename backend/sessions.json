@@ -1,0 +1,22 @@
+[
+    {
+        "id": "101",
+        "topic": "HTML",
+        "trainer": "Mr. Kumar"
+    },
+    {
+        "id": "102",
+        "topic": "CSS Basics",
+        "trainer": "Ms. Priya"
+    },
+    {
+        "id": "103",
+        "topic": "Javascript",
+        "trainer": "Mr. Ravi"
+    },
+    {
+        "id": "104",
+        "topic": "Java",
+        "trainer": "Mrs.Anitha"
+    }
+]

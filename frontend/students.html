@@ -13,82 +13,194 @@
     <h1>📚 Classroom Session Monitoring System</h1>
     
 <nav>
-    <a href="dashboard.html">Dashboard</a> |
-    <a href="students.html">Students</a> |
-    <a href="trainer.html">Trainers</a> |
-    <a href="batch.html">Batch</a> |
-    <a href="attendance.html">Attendance</a> |
-    <a href="sessions.html">Sessions</a> |
-    <a href="reports.html">Reports</a>
+    <a href="/dashboard">Dashboard</a> |
+    <a href="/students">Students</a> |
+    <a href="/trainer">Trainer</a> |
+    <a href="/batches">Batches</a> |
+    <a href="/attendance">Attendance</a> |
+    <a href="/sessions">Sessions</a> |
+    <a href="/reports">Reports</a>
 </nav>
 
 <hr>
 
     <h1>Student Management</h1>
+<!-- FIX: Ensured the form tag has id="studentForm" so JavaScript can find it -->
+<form id="studentForm">
+<input type="text" id="sId" placeholder="Student ID"><br><br>
 
-    <button onclick="alert('Student added successfully')">Add Student</button>
-         <button onclick="alert('Student edited successfully')">Edit Student</button>
-         <button onclick="alert('Student deleted successfully')">delete Student</button>
+<input type="text" id="sName" placeholder="Student Name"><br><br>
 
-    <br><br>
-    <input type="text" id="studentSearch"  placeholder="Search Student"><br><br>
-<button onclick="searchStudent()">Search</button>
-<br><br><hr>
+<input type="text" id="sBatch" placeholder="Batch"><br><br>
+
+<!-- FIX: Changed type to "submit" to let JavaScript catch the form properly -->
+<button type="submit">Add Student</button>
+
+<br><br>
+</form><hr>
+
+<input type="text" id="studentSearch" placeholder="Search Student"><br><br>
+
+<button onclick="searchStudent()">Search</button><hr>
 
 
-    <table border="1" align="center" style="background-color: whitesmoke;">
+    <!-- FIX: Made sure the table id matches "studentTable" exactly -->
+    <table id="studentTable" border="1" align="center" style="background-color: whitesmoke;">
         <h2>Student Management</h2>
 
         <div class="card">
     <h3>Total Students</h3>
-    <p>120</p>
+    <p id="totalCount">0</p>
 </div><hr>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Batch</th>
-            <th>Acions</th>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td>Rahul</td>
-            <td>Batch A</td>
-            <td>
-    <button>Edit</button>
-    <button>Delete</button>
-</td>
-        </tr>
-
-        <tr>
-            <td>2</td>
-            <td>Priya</td>
-            <td>Batch B</td>
-            <td>
-    <button>Edit</button>
-    <button>Delete</button>
-</td>
-        </tr>
-
-        <tr>
-            <td>3</td>
-            <td>Arun</td>
-            <td>Batch A</td>
-            <td>
-    <button>Edit</button>
-    <button>Delete</button>
-</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Batch</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentTableBody">
+            <!-- Python data drops in here automatically -->
+        </tbody>
 
     </table><hr>
 
     <footer>
     <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
-<script src="script.js"></script>
 
+<script>
+// 1. Load saved students from backend text file automatically on page load
+document.addEventListener("DOMContentLoaded", () => {
+    loadStudents();
 
+    // Catch form submit to process data safely via Python backend
+    const form = document.getElementById("studentForm");
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault(); // Prevent page reload blanking out
 
+            const idInput = document.getElementById("sId");
+            const nameInput = document.getElementById("sName");
+            const batchInput = document.getElementById("sBatch");
 
+            if (!idInput.value.trim() || !nameInput.value.trim() || !batchInput.value.trim()) {
+                alert("Please fill in all student input fields!");
+                return;
+            }
+
+            const studentData = {
+                id: idInput.value.trim(),
+                name: nameInput.value.trim(),
+                batch: batchInput.value.trim()
+            };
+
+            fetch('/api/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(studentData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    form.reset(); // Clear text boxes for next item
+                    
+                    // Unlock the ID field properties so it can be typed in again
+                    document.getElementById("sId").readOnly = false;
+                    document.getElementById("sId").style.backgroundColor = "";
+
+                    loadStudents(); // Instantly refresh list on screen
+                }
+            })
+            .catch(error => console.error("Error saving student:", error));
+        });
+    }
+});
+
+// 2. Read student roster from Python storage file
+function loadStudents() {
+    fetch('/api/students')
+        .then(response => response.json())
+        .then(data => {
+            renderTableRows(data.students);
+        })
+        .catch(error => console.error("Error loading students:", error));
+}
+
+// Helper function to build the visible table rows dynamically
+function renderTableRows(studentList) {
+    const tbody = document.getElementById("studentTableBody");
+    const totalCountText = document.getElementById("totalCount");
+    if (!tbody) return;
+
+    tbody.innerHTML = ""; 
+
+    if (totalCountText) {
+        totalCountText.innerText = studentList.length;
+    }
+
+    studentList.forEach((student) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${student.id}</td>
+            <td><strong>${student.name}</strong></td>
+            <td>${student.batch}</td>
+            <td>
+                <!-- FIX: Kept strings in clean single quotes so button arguments execute correctly -->
+                <button onclick="editStudent('${student.id}', '${student.name}', '${student.batch}')">Edit</button>
+                <button onclick="deleteStudent('${student.id}')" style="color: red;">delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// 3. SEARCH STUDENT FUNCTION
+function searchStudent() {
+    const searchVal = document.getElementById("studentSearch").value.toLowerCase().trim();
+    
+    fetch('/api/students')
+        .then(response => response.json())
+        .then(data => {
+            const filtered = data.students.filter(student => 
+                student.name.toLowerCase().includes(searchVal) || 
+                student.id.toString().includes(searchVal) ||
+                student.batch.toLowerCase().includes(searchVal)
+            );
+            renderTableRows(filtered); 
+        });
+}
+
+// 4. DELETE STUDENT FUNCTION
+function deleteStudent(studentId) {
+    if (!confirm("Are you sure you want to delete student ID: " + studentId + "?")) return;
+
+    fetch('/api/students/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: studentId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            loadStudents(); 
+        }
+    });
+}
+
+// 5. EDIT STUDENT FUNCTION
+function editStudent(id, name, batch) {
+    document.getElementById("sId").value = id;
+    document.getElementById("sName").value = name;
+    document.getElementById("sBatch").value = batch;
+    
+    // Lock the ID box during editing
+    document.getElementById("sId").readOnly = true; 
+    document.getElementById("sId").style.backgroundColor = "#e0e0e0"; 
+    
+    document.getElementById("sName").focus();
+}
+</script>
 </body>
 </html>

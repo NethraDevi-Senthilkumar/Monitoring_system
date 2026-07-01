@@ -1,0 +1,12 @@
+[
+    {
+        "id": "1",
+        "name": "Rahul",
+        "batch": "Batch A"
+    },
+    {
+        "id": "2",
+        "name": "Arun",
+        "batch": "Python batch A"
+    }
+]

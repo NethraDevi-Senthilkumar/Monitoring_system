@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Login page</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <style>
-    body{
-        background-color:lightsteelblue;
+<head>
+    <title>Secure Admin Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        background-color: lightsteelblue;
     }
 </style>
-    <body>
-        <h1>📚 Classroom Session Monitoring System</h1>
-        <p style="font-family:'Times New Roman', Times, serif;font-weight: bold;font-size:25px;">Welcome Administrator</p>
-         <p id="loginDateTime"
-style="font-family:Times New Roman;
-font-size:18px;
-font-weight:bold;">
-</p>
+<body>
+    <!-- Main Dashboard Heading Container -->
+    <h1>📚 Classroom Session Monitoring System</h1>
+    
+    <!-- Clean Live Digital Timestamp Block -->
+    <p id="loginTime" style="font-family:'Times New Roman', Times, serif; font-weight: bold; font-size:20px; margin-bottom: 20px;"></p><hr>
 
-<nav>
-    <a href="dashboard.html">Dashboard</a> |
-    <a href="students.html">Students</a> |
-    <a href="trainer.html">Trainers</a> |
-    <a href="batch.html">Batches</a> |
-    <a href="attendance.html">Attendance</a> |
-    <a href="sessions.html">Sessions</a> |
-    <a href="reports.html">Reports</a>
-</nav>
+    <!-- Professional Floating Login Box Container Card -->
+    <div class="login-card">
+        <h2 style="color: #1e3d59; margin-bottom: 25px; text-decoration: none; font-size: 1.5rem; text-align: center;">Secure Admin Login</h2>
+        
+        <form action="/login" method="POST">
+            <label style="font-weight: 600; color: #4a5568; display: block; margin-bottom: 5px;">Username</label>
+            <input type="text" placeholder="Enter Administrator Username" name="username" required>
+            
+            <label style="font-weight: 600; color: #4a5568; display: block; margin-bottom: 5px; margin-top: 10px;">Password</label>
+            <input type="password" placeholder="Enter Secure Password" name="password" required>
+            
+            <button type="submit" style="width: 100%; margin-top: 20px;">Unlock System Dashboard</button>
+        </form>
+    </div><hr>
 
-<hr>
-        <h1>Classroom Session Monitoring System</h1>
-        <input type="text" placeholder="Username">
-        <br><br>
+    <section id="footer" class="footer">
+<footer>
+    <p>© 2026 Classroom Session Monitoring System|Developed by Nethra devi S</p>
 
-        <input type="password" placeholder="Password">
-        <br><br>
 
-        <a href="dashboard.html">
-        <button>Login</button>
-        </a><hr>
-
-        <p>👨‍💼 Role: Administrator</p>
-        <p>⚙️ System Version: 1.0</p>
-        <p>🔒 Secure Login Enabled</p><hr>
-        <footer>
-    <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
+</section>
 
-     <script src="script.js"></script>
-
-    </body>
+    <!-- Interactive Live Clock Engine Script -->
+    <script>
+        function updateClock() {
+            document.getElementById("loginTime").innerHTML = new Date().toLocaleString();
+        }
+        updateClock();
+        setInterval(updateClock, 1000); // Dynamic: Tick-updates your clock text every single second!
+    </script>
+</body>
 </html>

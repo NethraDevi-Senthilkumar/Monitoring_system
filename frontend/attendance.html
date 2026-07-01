@@ -13,92 +13,182 @@
     <h1>📚 Classroom Session Monitoring System</h1>
 
 <nav>
-    <a href="dashboard.html">Dashboard</a> |
-    <a href="students.html">Students</a> |
-    <a href="trainer.html">Trainers</a> |
-    <a href="batch.html">Batches</a> |
-    <a href="attendance.html">Attendance</a> |
-    <a href="sessions.html">Sessions</a> |
-    <a href="reports.html">Reports</a> |
+    <a href="/dashboard">Dashboard</a> |
+    <a href="/students">Students</a> |
+    <a href="/trainers">Trainers</a> |
+    <a href="/badges">Batches</a> |
+    <a href="/attendance">Attendance</a> |
+    <a href="/sessions">Sessions</a> |
+    <a href="/reports">Reports</a>
 </nav>
 
 <hr>
 
     <h1>Attendance Management</h1>
-        <button onclick="alert('Student attendance marked successfully')">Mark attendance</button>
-    <button onclick="alert('Student attendance viewed successfully')">View attendance</button>
-     <br><br>
+    
+    <!-- FIX: Added simple input field elements to log new attendance entries -->
+    <div style="background-color: whitesmoke; padding: 15px; display: inline-block; border-radius: 5px;">
+        <h3>Mark Student Attendance</h3>
+        <input type="text" id="attName" placeholder="Student Name"><br><br>
+        <input type="date" id="attDate"><br><br>
+        <select id="attBatch">
+            <option value="Python batch A">Python batch A</option>
+            <option value="Web development">Web development</option>
+            <option value="java">java</option>
+        </select><br><br>
+        <select id="attStatus">
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select><br><br>
+        <button onclick="saveAttendance()">Mark attendance</button>
+    </div>
+    
+     <br><br><hr>
 
-     <input type="text" id="studentAttendance" placeholder="Search attendance"><br><br>
+     <input type="text" id="attendanceSearch" placeholder="Search attendance"><br><br>
 <button onclick="searchAttendance()">Search</button>
 <br><br><hr>
 
-<script src="script.js"></script>
 
 <h3 style="text-decoration-line: underline;">Attendance Summary</h3>
-
-<p>Total Students : 120</p>
-<p>Present : 110</p>
-<p>Absent : 10</p>
-<p><strong>Attendance percentage:</strong>94%</p><hr>
+<!-- FIX: Added dynamic text hooks for total statistics math -->
+<p>Total Records : <span id="sumTotal">0</span></p>
+<p>Present : <span id="sumPresent">0</span></p>
+<p>Absent : <span id="sumAbsent">0</span></p>
+<p><strong>Attendance percentage:</strong> <span id="sumPercent">0%</span></p><hr>
 
 <h3>Filter Attendance</h3>
-
-<select>
-    <option>All Batches</option>
-    <option>Python Batch A</option>
-    <option>Web Development</option>
-</select><br><br>
-
-<button>Filter</button><hr>
-
-
+<select id="batchFilter">
+    <option value="all">All Batches</option>
+    <option value="Python batch A">Python batch A</option>
+    <option value="Web development">Web development</option>
+    <option value="java">java</option>
+</select>
+<br><br>
+<button onclick="filterAttendance()">Filter</button><br><br>
+<hr>
 
 <br>    
-<table border="1" align="center" style="background-color: whitesmoke;">
-    
+<table id="attendanceTable" border="1" align="center" style="background-color: whitesmoke;">
+    <thead>
         <tr>
-            <th>Student Name</th>
+            <th>Name</th>
             <th>Date</th>
             <th>Batch</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
+    </thead>
+    <tbody id="attendanceTableBody">
+        <!-- Python data drops here -->
+    </tbody>
+</table><hr>
 
-        <tr>
-            <td>Rahul</td>
-            <td>22-06-2026</td>
-            <td>Python batch A</td>
-            <td>Present</td>
-            <td><button>Edit</button></td>
-        </tr>
-
-        <tr>
-            <td>Priya</td>
-            <td>22-06-2026</td>
-            <td>Web development</td>
-            <td>Absent</td>
-            
-            
-                        <td><button>Edit</button></td>
-
-        </tr>
-
-        <tr>
-            <td>Arun</td>
-            <td>22-06-2026</td>
-            <td>java</td>
-            <td>Present</td>
-                        <td><button>Edit</button></td>
-
-        </tr>
-
-    </table><hr>
-    <footer>
+<footer>
     <p> © 2026 Classroom Session Monitoring System|developed by Nethra devi S</p>
 </footer>
 
+<script>
+let masterAttendanceList = [];
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Default today's date picker to make entry fast
+    document.getElementById("attDate").valueAsDate = new Date();
+    loadAttendance();
+});
 
+function loadAttendance() {
+    fetch('/api/attendance')
+        .then(response => response.json())
+        .then(data => {
+            masterAttendanceList = data.attendance;
+            renderAttendance(masterAttendanceList);
+        });
+}
+
+function renderAttendance(list) {
+    const tbody = document.getElementById("attendanceTableBody");
+    if(!tbody) return;
+    tbody.innerHTML = "";
+
+    let presentCount = 0;
+    let absentCount = 0;
+
+    list.forEach((item, index) => {
+        if(item.status === "Present") presentCount++;
+        else absentCount++;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><strong>${item.name}</strong></td>
+            <td>${item.date}</td>
+            <td>${item.batch}</td>
+            <td style="color: ${item.status === 'Present' ? 'green' : 'red'}; font-weight: bold;">${item.status}</td>
+            <td><button onclick="toggleStatus('${item.name}', '${item.date}')">Toggle Present/Absent</button></td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Handle interactive summary pan
+const total = list.length;
+    document.getElementById("sumTotal").innerText = total;
+    document.getElementById("sumPresent").innerText = presentCount;
+    document.getElementById("sumAbsent").innerText = absentCount;
+    document.getElementById("sumPercent").innerText = total > 0 ? Math.round((presentCount / total) * 100) + "%" : "0%";
+}
+
+function saveAttendance() {
+    const name = document.getElementById("attName").value.trim();
+    const date = document.getElementById("attDate").value;
+    const batch = document.getElementById("attBatch").value;
+    const status = document.getElementById("attStatus").value;
+
+    if(!name) { alert("Please type a student name!"); return; }
+
+    const payload = { name, date, batch, status };
+
+    fetch('/api/attendance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === "success") {
+            document.getElementById("attName").value = "";
+            loadAttendance();
+        }
+    });
+}
+
+function searchAttendance() {
+    const query = document.getElementById("attendanceSearch").value.toLowerCase().trim();
+    const filtered = masterAttendanceList.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        item.batch.toLowerCase().includes(query)
+    );
+    renderAttendance(filtered);
+}
+
+function filterAttendance() {
+    const selection = document.getElementById("batchFilter").value;
+    if(selection === "all") {
+        renderAttendance(masterAttendanceList);
+    } else {
+        const filtered = masterAttendanceList.filter(item => item.batch === selection);
+        renderAttendance(filtered);
+    }
+}
+
+function toggleStatus(name, date) {
+    fetch('/api/attendance/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, date: date })
+    })
+    .then(res => res.json())
+    .then(data => { if(data.status === "success") loadAttendance(); });
+}
+</script>
 </body>
 </html>
