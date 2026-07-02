@@ -6,21 +6,57 @@
         "status": "Present"
     },
     {
-        "name": "Priya",
-        "date": "2026-06-22",
-        "batch": "Web development",
-        "status": "Absent"
-    },
-    {
         "name": "Arun",
         "date": "2026-06-22",
-        "batch": "java",
+        "batch": "Python batch B",
         "status": "Absent"
     },
     {
         "name": "Abinaya",
         "date": "2026-07-01",
-        "batch": "Web development",
+        "batch": "CSS Batch A",
         "status": "Present"
+    },
+    {
+        "name": "Vaibhaav",
+        "date": "2026-05-09",
+        "batch": "HTML Batch A",
+        "status": "Present"
+    },
+    {
+        "name": "Divya",
+        "date": "2026-06-25",
+        "batch": "Java Batch A",
+        "status": "Absent"
+    },
+    {
+        "name": "Nisha",
+        "date": "2026-06-28",
+        "batch": "Java Batch B",
+        "status": "Present"
+    },
+    {
+        "name": "Shahana",
+        "date": "2026-06-28",
+        "batch": "CSS Batch B",
+        "status": "Present"
+    },
+    {
+        "name": "Harshini",
+        "date": "2026-06-29",
+        "batch": "Web development Batch B",
+        "status": "Absent"
+    },
+    {
+        "name": "Aarav",
+        "date": "2026-06-29",
+        "batch": "HTML Batch B",
+        "status": "Present"
+    },
+    {
+        "name": "Raghav",
+        "date": "2026-06-29",
+        "batch": "Web development Batch A",
+        "status": "Absent"
     }
 ]

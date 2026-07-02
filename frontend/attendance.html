@@ -32,40 +32,59 @@
         <input type="text" id="attName" placeholder="Student Name"><br><br>
         <input type="date" id="attDate"><br><br>
         <select id="attBatch">
-            <option value="Python batch A">Python batch A</option>
-            <option value="Web development">Web development</option>
-            <option value="java">java</option>
+           <option value="Python batch A">Python batch A</option>
+        <option value="Python batch B">Python batch B</option>
+    <option value="Web development Batch A">Web development Batch A</option>
+
+    <option value="Web development Batch B">Web development Batch B</option>
+    <option value="Java Batch A">Java Batch A</option>
+        <option value="Java Batch B">Java Batch B</option>
+        <option value="HTML Batch A">HTML Batch A</option>
+        <option value="HTML Batch B">HTML Batch B</option>
+        <option value="CSS Batch A">CSS Batch A</option>
+        <option value="CSS Batch B">CSS Batch B</option>
         </select><br><br>
         <select id="attStatus">
             <option value="Present">Present</option>
             <option value="Absent">Absent</option>
         </select><br><br>
+        <center>
         <button onclick="saveAttendance()">Mark attendance</button>
+        </center>
     </div>
     
-     <br><br><hr>
+     <hr>
 
-     <input type="text" id="attendanceSearch" placeholder="Search attendance"><br><br>
+     <input type="text" id="attendanceSearch" placeholder="Search attendance"><br>
 <button onclick="searchAttendance()">Search</button>
-<br><br><hr>
+<hr>
 
 
-<h3 style="text-decoration-line: underline;">Attendance Summary</h3>
+<h3 style="text-decoration-line: underline;">Attendance Summary</h3><br>
 <!-- FIX: Added dynamic text hooks for total statistics math -->
 <p>Total Records : <span id="sumTotal">0</span></p>
 <p>Present : <span id="sumPresent">0</span></p>
 <p>Absent : <span id="sumAbsent">0</span></p>
 <p><strong>Attendance percentage:</strong> <span id="sumPercent">0%</span></p><hr>
 
-<h3>Filter Attendance</h3>
+<h3 style="text-decoration-line: underline;">Filter Attendance</h3><BR>
 <select id="batchFilter">
     <option value="all">All Batches</option>
     <option value="Python batch A">Python batch A</option>
-    <option value="Web development">Web development</option>
-    <option value="java">java</option>
+        <option value="Python batch B">Python batch B</option>
+    <option value="Web development Batch A">Web development Batch A</option>
+
+    <option value="Web development Batch B">Web development Batch B</option>
+    <option value="Java Batch A">Java Batch A</option>
+        <option value="Java Batch B">Java Batch B</option>
+        <option value="HTML Batch A">HTML Batch A</option>
+        <option value="HTML Batch B">HTML Batch B</option>
+        <option value="CSS Batch A">CSS Batch A</option>
+        <option value="CSS Batch B">CSS Batch B</option>
+
 </select>
-<br><br>
-<button onclick="filterAttendance()">Filter</button><br><br>
+<br>
+<button onclick="filterAttendance()">Filter</button><br>
 <hr>
 
 <br>    
@@ -92,7 +111,6 @@
 let masterAttendanceList = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Default today's date picker to make entry fast
     document.getElementById("attDate").valueAsDate = new Date();
     loadAttendance();
 });
@@ -118,23 +136,92 @@ function renderAttendance(list) {
         if(item.status === "Present") presentCount++;
         else absentCount++;
 
+        const backendName = item.name || item.student_name || "";
+        const backendDate = item.date || item.attendance_date || "";
+        const backendBatch = item.batch || item.batch_name || "";
+
         const row = document.createElement("tr");
+        row.id = `row-${index}`;
         row.innerHTML = `
-            <td><strong>${item.name}</strong></td>
-            <td>${item.date}</td>
-            <td>${item.batch}</td>
+            <td><strong>${backendName}</strong></td>
+            <td>${backendDate}</td>
+            <td>${backendBatch}</td>
             <td style="color: ${item.status === 'Present' ? 'green' : 'red'}; font-weight: bold;">${item.status}</td>
-            <td><button onclick="toggleStatus('${item.name}', '${item.date}')">Toggle Present/Absent</button></td>
+            <td>
+                <button onclick="toggleStatus('${backendName}', '${backendDate}')">Toggle Present/Absent</button>
+                <button onclick="startInlineEdit(${index}, '${backendName}', '${backendDate}', '${backendBatch}', '${item.status}')" style="background-color: #ffc107; border: 1px solid #cca105; cursor: pointer; padding: 2px 8px; margin-left: 4px;">Edit</button>
+                <button onclick="deleteAttendance(${index}, '${backendName}')" style="background-color: #dc3545; color: white; border: 1px solid #bd2130; cursor: pointer; padding: 2px 8px; margin-left: 4px;">Delete</button>
+            </td>
         `;
         tbody.appendChild(row);
     });
 
-    // Handle interactive summary pan
-const total = list.length;
+    const total = list.length;
     document.getElementById("sumTotal").innerText = total;
     document.getElementById("sumPresent").innerText = presentCount;
     document.getElementById("sumAbsent").innerText = absentCount;
     document.getElementById("sumPercent").innerText = total > 0 ? Math.round((presentCount / total) * 100) + "%" : "0%";
+}
+
+function startInlineEdit(index, name, date, batch, status) {
+    const row = document.getElementById(`row-${index}`);
+    row.innerHTML = `
+        <td><input type="text" id="editName-${index}" value="${name}" style="width: 90%;"></td>
+        <td><input type="date" id="editDate-${index}" value="${date}"></td>
+        <td>
+            <select id="editBatch-${index}">
+                <option value="Python batch A" ${batch === 'Python batch A' ? 'selected' : ''}>Python batch A</option>
+                                <option value="Python batch B" ${batch === 'Python batch B' ? 'selected' : ''}>Python Batch B</option>
+
+                <option value="Web development Batch A" ${batch === 'Web development Batch A' ? 'selected' : ''}>Web development Batch A</option>
+                            <option value="Web development Batch B" ${batch === 'Web development Batch B' ? 'selected' : ''}>Web development Batch B</option>
+    
+                <option value="Java Batch A" ${batch === 'Java Batch A' ? 'selected' : ''}>Java Batch A</option>
+                                <option value="Java Batch B" ${batch === 'Java Batch B' ? 'selected' : ''}>Java Batch B</option>
+                                <option value="HTML Batch A" ${batch === 'HTML Batch A' ? 'selected' : ''}>HTML Batch A</option>
+                            <option value="HTML Batch B" ${batch === 'HTML Batch B' ? 'selected' : ''}>HTML Batch B</option>
+                    <option value="CSS Batch A" ${batch === 'CSS Batch A' ? 'selected' : ''}>CSS Batch A</option>
+                <option value="CSS Batch B" ${batch === 'CSS Batch B' ? 'selected' : ''}>CSS Batch B</option>
+
+
+            </select>
+        </td>
+        <td style="color: ${status === 'Present' ? 'green' : 'red'}; font-weight: bold;">${status}</td>
+        <td>
+            <button onclick="saveInlineEdit(${index}, '${status}')" style="background-color: #28a745; color: white; border: 1px solid #1e7e34; cursor: pointer; padding: 2px 8px;">Save</button>
+            <button onclick="renderAttendance(masterAttendanceList)" style="background-color: #6c757d; color: white; border: 1px solid #545b62; cursor: pointer; padding: 2px 8px; margin-left: 4px;">Cancel</button>
+        </td>
+    `;
+}
+
+function saveInlineEdit(index, status) {
+    const newName = document.getElementById(`editName-${index}`).value.trim();
+    const newDate = document.getElementById(`editDate-${index}`).value;
+    const newBatch = document.getElementById(`editBatch-${index}`).value;
+
+    if(!newName) { alert("Student name cannot be empty!"); return; }
+
+    const payload = {
+        index: index,
+        name: newName,
+        date: newDate,
+        batch: newBatch,
+        status: status
+    };
+
+    fetch('/api/attendance/update', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === "success") {
+            loadAttendance();
+        } else {
+            alert("Error: " + data.message);
+        }
+    });
 }
 
 function saveAttendance() {
@@ -163,10 +250,11 @@ function saveAttendance() {
 
 function searchAttendance() {
     const query = document.getElementById("attendanceSearch").value.toLowerCase().trim();
-    const filtered = masterAttendanceList.filter(item => 
-        item.name.toLowerCase().includes(query) || 
-        item.batch.toLowerCase().includes(query)
-    );
+    const filtered = masterAttendanceList.filter(item => {
+        const name = item.name || item.student_name || "";
+        const batch = item.batch || item.batch_name || "";
+        return name.toLowerCase().includes(query) || batch.toLowerCase().includes(query);
+    });
     renderAttendance(filtered);
 }
 
@@ -175,7 +263,10 @@ function filterAttendance() {
     if(selection === "all") {
         renderAttendance(masterAttendanceList);
     } else {
-        const filtered = masterAttendanceList.filter(item => item.batch === selection);
+        const filtered = masterAttendanceList.filter(item => {
+            const batch = item.batch || item.batch_name || "";
+            return batch === selection;
+        });
         renderAttendance(filtered);
     }
 }
@@ -188,6 +279,24 @@ function toggleStatus(name, date) {
     })
     .then(res => res.json())
     .then(data => { if(data.status === "success") loadAttendance(); });
+}
+
+function deleteAttendance(index, name) {
+    if (confirm(`Are you sure you want to delete the record for ${name}?`)) {
+        fetch('/api/attendance/delete', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ index: index })
+        })
+        .then(res => res.json())
+        .then(data => { 
+            if(data.status === "success") {
+                loadAttendance(); 
+            } else {
+                alert("Error: " + data.message);
+            }
+        });
+    }
 }
 </script>
 </body>

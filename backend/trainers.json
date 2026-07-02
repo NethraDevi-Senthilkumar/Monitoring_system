@@ -1,7 +1,7 @@
 [
     {
         "id": "1",
-        "name": "Mr. Kumar",
+        "name": "Mr. Senthil Kumar",
         "subject": "HTML"
     },
     {
@@ -12,6 +12,16 @@
     {
         "id": "3",
         "name": "Mrs.Anitha",
-        "subject": "Javascript"
+        "subject": "Web development"
+    },
+    {
+        "id": "4",
+        "name": "Mr.Anandh",
+        "subject": "Java"
+    },
+    {
+        "id": "5",
+        "name": "Mrs.Indhu",
+        "subject": "Python"
     }
 ]

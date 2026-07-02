@@ -2,11 +2,51 @@
     {
         "id": "1",
         "name": "Rahul",
-        "batch": "Batch A"
+        "batch": "Python Batch A"
     },
     {
         "id": "2",
         "name": "Arun",
-        "batch": "Python batch A"
+        "batch": "Python batch B"
+    },
+    {
+        "id": "3",
+        "name": "Divya",
+        "batch": "Java Batch A"
+    },
+    {
+        "id": "4",
+        "name": "Abinaya",
+        "batch": "CSS Batch A"
+    },
+    {
+        "id": "5",
+        "name": "Vaibhaav",
+        "batch": "HTML Batch A"
+    },
+    {
+        "id": "6",
+        "name": "Raghav",
+        "batch": "Web development Batch A"
+    },
+    {
+        "id": "7",
+        "name": "Aarav",
+        "batch": "HTML Batch B"
+    },
+    {
+        "id": "8",
+        "name": "Nisha",
+        "batch": "Java Batch B"
+    },
+    {
+        "id": "9",
+        "name": "Harshini",
+        "batch": "Web development Batch B"
+    },
+    {
+        "id": "10",
+        "name": "Shahana",
+        "batch": "CSS Batch B"
     }
 ]

@@ -2,19 +2,61 @@
     {
         "id": "B001",
         "name": "Python Batch A",
-        "trainer": "Mrs.Anitha",
+        "trainer": "Mr.Senthil kumar",
         "students": "30"
     },
     {
         "id": "B002",
-        "name": "Web Development",
-        "trainer": "Mr.Rahul",
-        "students": "25"
+        "name": "Web Development Batch A",
+        "trainer": "Mrs.Anitha",
+        "students": "30"
     },
     {
         "id": "B003",
-        "name": "Java",
-        "trainer": "Mr.Senthil kumar",
+        "name": "Java Batch A",
+        "trainer": "Mr.Karthick",
         "students": "64"
+    },
+    {
+        "id": "B004",
+        "name": "Python Batch B",
+        "trainer": "Mrs.Sasireka",
+        "students": "27"
+    },
+    {
+        "id": "B005",
+        "name": "Web Development Batch B",
+        "trainer": "Mr.Ezhilarasan",
+        "students": "30"
+    },
+    {
+        "id": "B006",
+        "name": "Java Batch B",
+        "trainer": "Mr.Bharathiraja",
+        "students": "32"
+    },
+    {
+        "id": "B007",
+        "name": "HTML Batch A",
+        "trainer": "Ms.Swetha",
+        "students": "29"
+    },
+    {
+        "id": "B008",
+        "name": "HTML Batch B",
+        "trainer": "Mrs.Mohanapriya",
+        "students": "34"
+    },
+    {
+        "id": "B009",
+        "name": "CSS Batch A",
+        "trainer": "Mrs.Subha sri",
+        "students": "30"
+    },
+    {
+        "id": "B010",
+        "name": "CSS Batch B",
+        "trainer": "Mrs.Sumithra",
+        "students": "32"
     }
 ]

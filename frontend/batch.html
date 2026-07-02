@@ -16,7 +16,7 @@
     <a href="/dashboard">Dashboard</a> |
     <a href="/students">Students</a> |
     <a href="/trainers">Trainers</a> |
-    <a href="/badges">Batches</a> | <!-- Keeps your main link working -->
+    <a href="/batches">Batches</a> | <!-- Keeps your main link working -->
     <a href="/attendance">Attendance</a> |
     <a href="/sessions">Sessions</a> |
     <a href="/reports">Reports</a>
@@ -33,23 +33,23 @@
 <input type="text" id="btrainer" placeholder="Trainer Name"><br><br>
 
 <input type="text" id="bstudents" placeholder="Students Count"><br><br>
-
+<center>
 <button type="submit">Add Batch</button>
-<br><br>
+</center>
+
 </form><hr>
 
-<br>
 
-<input type="text" id="batchSearch" placeholder="Search Batch"><br><br>
+
+<input type="text" id="batchSearch" placeholder="Search Batch"><br>
 <button onclick="searchBatch()">Search</button>
-
 <hr>
-<h2 style="text-decoration-line: underline;">Batch Statistics</h2>
+<h2 style="text-decoration-line: underline;">Batch Statistics</h2><br>
 
 <!-- FIX: Added span IDs to update your metrics card in real time -->
 <p>Total Batches: <span id="statTotal">0</span></p>
 <p>Active Batches: <span id="statActive">0</span></p>
-<p>Completed Batches: <span id="statCompleted">0</span></p>
+<p>Completed Batches: <span id="statCompleted">0</span></p><hr>
 
 
 <table id="studentBatch" border="1" align="center" style="background-color: whitesmoke;">

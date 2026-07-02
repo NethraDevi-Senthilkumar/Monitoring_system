@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,jsonify
 
 # Safely paths your frontend directory folders
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -287,8 +287,62 @@ def toggle_attendance():
             break
     save_stored_attendance(current_list)
     return {"status": "success"}
+@app.route('/api/attendance/update', methods=['POST'])
+def update_attendance():
+    try:
+        data = request.get_json()
+        idx = int(data.get('index'))
+        
+        # 1. Load the fresh attendance list straight from your storage function
+        temp_list = load_stored_attendance()
+        
+        # 2. Check if the index position exists in your list
+        if 0 <= idx < len(temp_list):
+            item = temp_list[idx]
+            
+            # Identify which keys your data objects are using
+            name_key = 'name' if 'name' in item else ('student_name' if 'student_name' in item else 'name')
+            date_key = 'date' if 'date' in item else ('attendance_date' if 'attendance_date' in item else 'date')
+            batch_key = 'batch' if 'batch' in item else ('batch_name' if 'batch_name' in item else 'batch')
+            status_key = 'status' if 'status' in item else 'status'
+
+            # Overwrite the properties inside that exact row position
+            item[name_key] = data.get('name')
+            item[date_key] = data.get('date')
+            item[batch_key] = data.get('batch')
+            item[status_key] = data.get('status')
+
+            # 3. Save the modified list back to your file storage
+            save_stored_attendance(temp_list)
+            return jsonify({"status": "success", "message": "Updated successfully"}), 200
+        else:
+            return jsonify({"status": "error", "message": "Index out of range"}), 400
+            
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 
+@app.route('/api/attendance/delete', methods=['POST'])
+def delete_attendance():
+    try:
+        data = request.get_json()
+        idx = int(data.get('index'))
+        
+        # 1. Load the fresh attendance list straight from your storage function
+        temp_list = load_stored_attendance()
+        
+        # 2. Pop the record out of the array using its position index
+        if 0 <= idx < len(temp_list):
+            temp_list.pop(idx)
+            
+            # 3. Save the updated list back to file storage
+            save_stored_attendance(temp_list)
+            return jsonify({"status": "success", "message": "Deleted successfully"}), 200
+        else:
+            return jsonify({"status": "error", "message": "Index out of range"}), 400
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 # ---------------------------------------------------------
 # MODULE 7: SESSIONS MANAGEMENT
 # ---------------------------------------------------------
